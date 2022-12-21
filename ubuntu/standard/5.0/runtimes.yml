@@ -1,6 +1,46 @@
 version: 0.1
 
-runtimes:  
+runtimes:
+  java:
+    versions:
+      corretto8:
+        commands:
+          - echo "Installing Java version 8 ..."
+
+          - export JAVA_HOME="$JAVA_8_HOME"
+
+          - export JRE_HOME="$JRE_8_HOME"
+
+          - export JDK_HOME="$JDK_8_HOME"
+
+          - |-
+            for tool_path in "$JAVA_8_HOME"/bin/* "$JRE_8_HOME"/bin/*;
+             do tool=`basename "$tool_path"`;
+              if [ $tool != 'java-rmi.cgi' ];
+              then
+              update-alternatives --list "$tool" | grep -q "$tool_path" \
+               && update-alternatives --set "$tool" "$tool_path";
+              fi;
+            done
+      corretto11:
+        commands:
+          - echo "Installing Java version 11 ..."
+
+          - export JAVA_HOME="$JAVA_11_HOME"
+
+          - export JRE_HOME="$JRE_11_HOME"
+
+          - export JDK_HOME="$JDK_11_HOME"
+
+          - |-
+            for tool_path in "$JAVA_HOME"/bin/*;
+             do tool=`basename "$tool_path"`;
+              if [ $tool != 'java-rmi.cgi' ];
+              then
+               update-alternatives --list "$tool" | grep -q "$tool_path" \
+                && update-alternatives --set "$tool" "$tool_path";
+              fi;
+            done
   python:
     versions:
       3.7:
